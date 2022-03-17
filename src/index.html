@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js"></script>
+</head>
+
+<body>
+    <nav>
+        <a href="/src/">Home</a> |
+        <a href="/src/sc_gui.html">SC Gui</a> |
+        <a href="/js/">JavaScript</a> |
+        <a href="/python/">Python</a>
+    </nav>
+
+    <br><br>
+
+    <button id="enableMetamask" name="enableMetamask">
+        <img class="fit-picture" src="../mm.png" alt="Metamask" \>
+    </button>
+    <h3>
+        Account Adress is:
+        <span id="showAccount"></p>
+    </h3>
+    <h3>
+        Balance is:
+        <span id="showBalance"></p>
+        </span Ether>
+    </h3>
+
+    <br>
+    <input id="recieverAdress" type="text" name="reciever" placeholder="Reciever Address" />
+    <br><br>
+    <button id="submit-btn"> Send</button>
+    <p id="transactions"></p>
+
+    <script type="module" src="index.js"></script>
+
+</body>
+
+</html>
