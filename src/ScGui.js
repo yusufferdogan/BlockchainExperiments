@@ -1,4 +1,4 @@
-import * as wAbi from "./withdraw_abi.js"
+import * as wAbi from "./abi/withdraw_abi.js"
 import * as deneme from "./deneme.js"
 
 if (typeof web3 !== 'undefined') {
@@ -14,7 +14,7 @@ const destAddressField = document.getElementById("SC_destAddress");
 const jsonInterface = JSON.parse(JSON.stringify(wAbi.myAbi()));
 const contractAdress = "0xCF20821264320f62212DEdc1637d036651817d65";
 
-// console.log(jsonInterface);
+//console.log(jsonInterface);
 //contract.methods.withdraw(ilkparam, ikinciparam).send({from: selectedAddress})
 const contract = new web3.eth.Contract(jsonInterface, contractAdress);
 submitButton.addEventListener("click", async function (e) {
@@ -41,6 +41,7 @@ submitButton.addEventListener("click", async function (e) {
     console.log("Dest Adress : " + destAdress);
     console.log("amount : " + amount);
 });
+
 window.onload = showInfo
 async function showInfo() {
 	const contractBalanceElement = document.getElementById("contract_balance")
