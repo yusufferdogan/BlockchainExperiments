@@ -62,8 +62,6 @@ function addElement(adress) {
 const metamaskButton = document.getElementById("enableMetamask");
 const showAccount = document.getElementById("showAccount");
 metamaskButton.addEventListener("click", function (e) {
-    // getWallet();
-    // unlockWallet();
     showAccountDetails();
 })
 
@@ -76,3 +74,5 @@ async function showAccountDetails() {
     showAccount.innerHTML = account;
 
 }
+window.onload = showAccountDetails
+
