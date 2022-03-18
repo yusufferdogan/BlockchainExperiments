@@ -18,6 +18,9 @@ const contractAdress = "0xCF20821264320f62212DEdc1637d036651817d65";
 //contract.methods.withdraw(ilkparam, ikinciparam).send({from: selectedAddress})
 const contract = new web3.eth.Contract(jsonInterface, contractAdress);
 submitButton.addEventListener("click", async function (e) {
+    const txHashElement = document.getElementById("tx_hash");
+    const txDetailsElement = document.getElementById("tx_details");
+
     const destAdress = destAddressField.value;
     const amount = amountField.value;
     try {
@@ -28,11 +31,15 @@ submitButton.addEventListener("click", async function (e) {
             destAdress.toLowerCase()
         ).send({
             from: currentAccount
-        }, function (err, res) {
+        }, async function (err, res) {
             if (err) {
                 console.log("an error occured" + err);
             } else {
+                const tx = await web3.eth.getTransaction(res)
+                txDetailsElement.innerHTML = 
+                `from : ${tx.from} \n to: ${tx.to} \n value : ${tx.value} \n `
                 console.log("Transaction Hash:" + res)
+                txHashElement.innerHTML = "Transaction Hash:" + res
             }
         })
     } catch (e) {

@@ -13,32 +13,67 @@
     <script src="./components/navbar/navbar.js"></script>
 </head>
 
-<body>
-    <div class="container-fluid">
+<body style="height: 1000px;">
+    <div class="container-fluid" >
 
         <my-nav-bar></my-nav-bar>
+
+        <ul class="list-group" style="width: 45%;">
+            <li class="list-group-item">
+                <h4>
+                    Contract Adress : 0xCF20821264320f62212DEdc1637d036651817d65
+                </h4>
+            </li>
+            <li class="list-group-item">
+                <h4>
+                    Contract Balance : <span id="contract_balance">
+                </h4>
+            </li>
+            <li class="list-group-item">
+                <h4>
+                    Contract Owner : <span id="contract_owner">
+
+                </h4>
+            </li>
+            <li class="list-group-item">
+                <h4>
+                    Transaction Details : <span id="contract_transaction"></span>
+                </h4>
+                <p>
+                    <div id="tx_hash"></div>
+                    <div id="tx_details"></div>
+                </p>
+            </li>
+        </ul>
+
         <br><br>
-        <div>Contract Adress : 0xCF20821264320f62212DEdc1637d036651817d65</div>
-        <div>Contract Balance : <span id="contract_balance"></p>
-        </div>
-        <div>Contract Owner : <span id="contract_owner"></p>
-        </div><br><br>
-        <div>Transaction Details <span id="contract_transaction"></span></div> <br><br>
-        <input id="SC_destAddress" type="text" name="destAddress" placeholder="destAddress" />
-        <br><br>
-        <button id="SC_submit-btn" href="javascript:;" class="btn btn-mini"> Send</button>
         <script type="module" src="ScGui.js"></script>
 
-        <div class="form-group">
-            <!-- <label for="SC_amount">amount:</label> -->
-            <input style="width: 15rem; background-color: rgba(0,0,255,.1)" class="form-control" id="SC_amount"
-                type="number" placeholder="amount" />
+        <div class="form-group" style="width: 40%;">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <span class="input-group-addon">Amount </span>
+                        <input id="SC_amount" type="number" class="form-control" name="msDestinationg"
+                            style="width: 40rem; " placeholder="Amount" />
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <span class="input-group-addon">Address</span>
+                        <input id="SC_destAddress" type="text" class="form-control" name="msDestinationg"
+                            style="width: 40rem; " placeholder="Destination Address" />
+                    </div>
+                </li>
+            </ul>
         </div>
 
-        <div class="container">
+        <button id="SC_submit-btn" type="button" class="btn btn-primary">Send</button>
+
+        <div class="card" style="width: 40rem; height: 40rem; position: absolute; right:0; bottom: -300px;">
             <div class="alert alert-success" id="success-alert">
                 <button type="button" class="close" data-dismiss="alert">x</button>
-                <strong>Success! </strong> Product have added to your wishlist.
+                Confirm your Transaction
             </div>
         </div>
 
