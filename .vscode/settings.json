@@ -1,3 +1,8 @@
 {
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "gitlab.repositories": {
+        "/home/yusuf/Blockchain/my_first_project/TS_project/web3-ts": {
+            "preferredRemoteName": "main"
+        }
+    }
 }
