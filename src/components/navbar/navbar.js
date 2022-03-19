@@ -1,4 +1,4 @@
-fetch("./components/navbar/navbar.html")
+fetch("/src/components/navbar/navbar.html")
     .then(stream => stream.text())
     .then(text => define(text));
 
