@@ -1,4 +1,5 @@
 import * as deneme from "./deneme.js"
+import * as FaucetAbi from "./abi/faucet_abi.js"
 
 // Checking if Web3 has been injected by the browser (Mist/MetaMask)
 if (typeof web3 !== 'undefined') {
@@ -8,7 +9,7 @@ if (typeof web3 !== 'undefined') {
 
 } else {
     //If you click "ok" you would be redirected . Cancel will load this website
-    if (window.confirm('Install Metamask')) {
+    if (window.confirm('Please install Metamask')) {
         window.location.href = 'https://metamask.io/download/';
     };
     console.log('No web3? You should consider trying MetaMask!')
@@ -25,29 +26,30 @@ const TxObject = {
     gasPrice: "",
 }
 
+const contractAdress = "0x13FCe3cA4188B890e4ADA96807253409eE80147A";
+const jsonInterface = JSON.parse(JSON.stringify(FaucetAbi.FaucetAbi()));
+const contract = new web3.eth.Contract(jsonInterface, contractAdress);
+
 const submit_button = document.getElementById('submit-btn');
+const amountField = document.getElementById("Faucet-amount");
+const addressField = document.getElementById("Faucet-recieverAdress");
+
+
 submit_button.addEventListener('click', async function (e) {
-    const adress = document.getElementById("recieverAdress").value;
-    TxObject.receiver = adress;
-    addElement(adress)
+    TxObject.receiver = addressField.value;
+    addElement(addressField)
 
     TxObject.sender = await deneme.getAccount()
     TxObject.balance = await deneme.getAccountBalance(TxObject.sender)
 
     deneme.estimateGas(TxObject.sender, TxObject.receiver).then(function (gas) {
         TxObject.gas = gas
-        alert("estimated gas is: " + String(gas));
+        // alert("estimated gas is: " + String(gas));
     })
 
-    deneme.sendTransaction(TxObject.sender, adress, String(deneme.etherToWei("0.01"))).
-    then(function (receipt) {
-        TxObject.receipt = receipt;
-        console.log(receipt.toString());
-    });
+    await sendTokenFromSc();
 
     TxObject.gasPrice = await deneme.getGasPrice();
-    alert("Gas Price is : " + deneme.weiToEther(TxObject.gasPrice))
-    alert("Gas fee is :" + String(deneme.weiToEther(TxObject.gas * TxObject.gasPrice)))
     console.log("Gas Price is : " + deneme.weiToEther(TxObject.gasPrice))
     console.log(TxObject)
 })
@@ -55,7 +57,7 @@ submit_button.addEventListener('click', async function (e) {
 function addElement(adress) {
     const transactions = document.getElementById('transactions');
     const transaction = document.createElement("div");
-    transaction.innerHTML = "0.05 Ether has sended to " + adress
+    transaction.innerHTML =  amountField.value + " ether has sended to " + adress.value
     transactions.appendChild(transaction);
 }
 
@@ -76,3 +78,28 @@ async function showAccountDetails() {
 }
 window.onload = showAccountDetails
 
+async function sendTokenFromSc(){
+
+    const destAdress = addressField.value;
+    const amount = amountField.value;
+    try {
+        const currentAccount = await deneme.getAccount();
+        const receipt = await contract.methods.withdraw(
+            deneme.etherToWei(amount),
+            destAdress.toLowerCase()
+        ).send({
+            from: currentAccount
+        }, async function (err, res) {
+            if (err) {
+                console.log("an error occured" + err);
+            } else {
+                const tx = await web3.eth.getTransaction(res)
+            }
+        })
+    } catch (e) {
+        console.log(e)
+    }
+    console.log("Dest Adress : " + destAdress);
+    console.log("amount : " + amount);
+    
+}
