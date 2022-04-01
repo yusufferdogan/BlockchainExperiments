@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../components/navbar/navbar.js"></script>
+    <script type="module" src="vote.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css" rel="stylesheet" />
+</head>
+
+<body style="margin:10px">
+    <my-nav-bar></my-nav-bar>
+    <br><br>
+    <ul class="list-group" style="width: 40%;">
+        <li class="list-group-item">
+            <h7>
+                TOKEN ADDRESS:0xE91E28288ab1841B79Ba70642709224477E9dA2E</p>
+            </h7>
+        </li>
+        <li class="list-group-item">
+            <h7>
+                Balance is: <span id="balance"></span> <span> YUSUF </span>
+            </h7>
+        </li>
+    </ul>
+
+    <h5 style="margin:1rem"> Get Proposal </h5>
+    <div class="form-group" style="width: 40%;">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="input-group">
+                    <span class="input-group-addon">Proposal id </span>
+                    <input id="get_proposal_id" type="number" class="form-control" name="msDestinationg"
+                        style="width: 40rem; " placeholder="Proposal id" />
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div>
+                    <p> Proposal Name: <span id="proposal_name"> </span> </p>
+                    <p> Proposal Description: <span id="proposal_description"> </span> </p>
+                    <p> Accepted Votes: <span id="accepted_votes"> </span> </p>
+                    <p> Rejected Votes: <span id="rejected_votes"> </span> </p>
+
+                </div>
+            </li>
+        </ul>
+    </div>
+    <button style="margin:1rem" id="get_proposal_button" type="button" class="btn btn-primary">Get Proposal</button>
+
+
+    <h5 style="margin:1rem"> Add Proposal </h5>
+    <div class="form-group" style="width: 40%;">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="input-group">
+                    <span class="input-group-addon">Name of the Proposal </span>
+                    <input id="proposal_add_name" type="text" class="form-control" name="msDestinationg"
+                        style="width: 40rem; " placeholder="Name of the Proposal" />
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="input-group">
+                    <span class="input-group-addon">Description of the Proposal</span>
+                    <input id="proposal_add_description" type="text" class="form-control" name="msDestinationg"
+                        style="width: 40rem; " placeholder="Description"/>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="input-group">
+                    <span class="input-group-addon">Open to Vote </span>
+                    <input id="deadline" type="number" class="form-control" name="msDestinationg"
+                        style="width: 40rem; " placeholder="How many days Proposal will open" />
+                </div>
+            </li>
+        </ul>
+        <button style="margin:1rem" id="add_proposal_button" type="button" class="btn btn-primary">Add Proposal</button>
+        <p id="transactions"></p>
+    </div>
+
+    <h5 style="margin:1rem"> Vote Proposal </h5>
+
+    <div class="form-group" style="width: 40%;">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="input-group">
+                    <span class="input-group-addon">Amount As Yusuf</span>
+                    <input id="vote_amount" type="number" class="form-control" name="msDestinationg"
+                        style="width: 40rem; " placeholder="Amount as Yusuf" />
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="input-group">
+                    <span class="input-group-addon">Proposal id </span>
+                    <input id="proposal_id" type="number" class="form-control" name="msDestinationg"
+                        style="width: 40rem; " placeholder="Enter proposal id" />
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="input-group">
+                    <span class="input-group-addon"> Write 0 for reject 1 for accept </span>
+                    <input id="proposal_vote_as" type="number" class="form-control" name="msDestinationg"
+                        style="width: 40rem; " placeholder="Write 0 for reject 1 for accept" />
+                </div>
+            </li>
+        </ul>
+    </div>
+    <button style="margin:1rem" id="vote_proposal_button" type="button" class="btn btn-primary">Vote Proposal</button>
+    <p id="transactions"></p>
+</body>
+
+</html>
