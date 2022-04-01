@@ -18,6 +18,8 @@
         "postinstall": "rm -f node_modules/web3/index.d.ts"
     },
     "dependencies": {
+        "@openzeppelin/contracts": "^4.5.0",
+        "@poanet/solidity-flattener": "^3.0.7",
         "@types/node": "^12.11.5",
         "browserify": "^17.0.0",
         "ora": "^4.0.2",

@@ -1,7 +1,7 @@
 // import * as abi from "./abi/abi"
 
-export async function getAccountBalance(accountAdress, unit = 'ether') {
-    let balance = await web3.eth.getBalance(accountAdress);
+export async function getAccountBalance(accountAddress, unit = 'ether') {
+    let balance = await web3.eth.getBalance(accountAddress);
     return balance;
 }
 
@@ -43,4 +43,12 @@ export async function getGasPrice() {
 
 export async function smartContractWithdraw(contract, amount) {
     
+}
+
+export function multiplyWithTenToSix(amount){
+    return amount * 10**6;
+}
+
+export function divideByTenToSix(amount){
+    return amount / 10**6;
 }
