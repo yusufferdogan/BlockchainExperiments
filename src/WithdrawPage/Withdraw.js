@@ -1,5 +1,5 @@
 import * as wAbi from "../abi/withdraw_abi.js"
-import * as deneme from "../deneme.js"
+import * as deneme from "../web3Lib.js"
 
 if (typeof web3 !== 'undefined') {
     web3 = new Web3(window.ethereum);

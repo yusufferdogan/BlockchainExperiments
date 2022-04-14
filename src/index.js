@@ -1,4 +1,4 @@
-import * as deneme from "./deneme.js"
+import * as deneme from "./web3Lib.js"
 import * as FaucetAbi from "./abi/faucet_abi.js"
 
 // Checking if Web3 has been injected by the browser (Mist/MetaMask)
