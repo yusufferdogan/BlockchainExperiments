@@ -1,6 +1,5 @@
 import * as SalaryManagerAbi from "../abi/salaryManagerAbi.js"
 import * as UsdtAbi from "../abi/usdt_abi.js"
-
 import * as Web3Lib from "../web3Lib.js"
 
 if (typeof web3 !== 'undefined') {
@@ -10,10 +9,8 @@ if (typeof web3 !== 'undefined') {
 }
 
 //*****************************************************************************
-const addresses = ["0xc7115557e58EeD59471c5BE7748eF284938B4a5d","0x07147406D726df8C84576d07011a6B14894dD6bD"]
-const amounts = [300 , 200]
-const amountsAsWei = amounts.map(amount => Web3Lib.etherToWei(amount))
-const total = amounts.reduce((a, b) => a + b, 0)
+const addresses = []
+const amounts = []
 //*****************************************************************************
 const jsonInterface = JSON.parse(JSON.stringify(SalaryManagerAbi.myAbi()));
 const contractAddress = "0xB390a772D89078e529ec3E8510f39455D4d5af97";
@@ -27,14 +24,22 @@ const usdtContract = new web3.eth.Contract(usdtJsonInterface, usdtContractAddres
 const button = document.getElementById("submit_button");
 button.addEventListener("click", async function (e) {
     const userAccount = await Web3Lib.getAccount();
+    await pay(userAccount);
+})
+
+const approveButton = document.getElementById("approve_button");
+const InputField = document.getElementById("salary")
+approveButton.addEventListener("click", async function (e) {
+    const userAccount = await Web3Lib.getAccount();
+    manipulateString()
     await allowance(userAccount);
     await approve(userAccount);
-    await pay(userAccount);
-    await allowance(userAccount);
+    addresses.length = 0;
+    amounts.length = 0;
 })
 
 async function pay(userAccount){
-    await contract.methods.payUsdt(usdtContractAddress,addresses,amountsAsWei).send(
+    await contract.methods.payUsdt(usdtContractAddress,addresses,getAmounts()).send(
         { from: userAccount }, async function (err, result) {
             if (err) {
                 console.log(err);
@@ -73,7 +78,7 @@ async function getUsdtBalance(userAccount){
 }
 
 async function approve(userAccount){
-    await usdtContract.methods.approve(contractAddress,Web3Lib.etherToWei(total)).send(
+    await usdtContract.methods.approve(contractAddress,getTotal()).send(
         { from: userAccount }, async function (err, result) {
             if (err) {
                 console.log(err);
@@ -83,4 +88,25 @@ async function approve(userAccount){
             }
         }
     );
+}
+
+function manipulateString(){
+    const text = InputField.value;
+    const lines = text.trim().split('\n');
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim().split(",")
+        addresses.push(line[0].trim())
+        amounts.push(parseInt(line[1].trim()))
+    }
+    console.log(addresses)
+    console.log(amounts)
+}
+
+function getAmounts(){
+    return amounts.map(amount => Web3Lib.etherToWei(amount));
+}
+
+function getTotal(){
+    const total = amounts.reduce((a, b) => a + b, 0)
+    return Web3Lib.etherToWei(total);
 }
