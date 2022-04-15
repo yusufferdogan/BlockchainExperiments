@@ -13,7 +13,7 @@ const addresses = []
 const amounts = []
 //*****************************************************************************
 const jsonInterface = JSON.parse(JSON.stringify(SalaryManagerAbi.myAbi()));
-const contractAddress = "0xB390a772D89078e529ec3E8510f39455D4d5af97";
+const contractAddress = "0xa93C73c5F9b4f53352dd1d61B377a0d6d1820d20";
 const contract = new web3.eth.Contract(jsonInterface, contractAddress);
 //*****************************************************************************
 const usdtJsonInterface = JSON.parse(JSON.stringify(UsdtAbi.myAbi()));
@@ -24,22 +24,23 @@ const usdtContract = new web3.eth.Contract(usdtJsonInterface, usdtContractAddres
 const button = document.getElementById("submit_button");
 button.addEventListener("click", async function (e) {
     const userAccount = await Web3Lib.getAccount();
+    manipulateString()
+    const UserAllowance = Web3Lib.weiToEther(await allowance(userAccount));
+    console.log("UserAllowance: ", UserAllowance)
+    if(UserAllowance < getTotal()){
+        await approve(userAccount,500);
+    }
     await pay(userAccount);
+    addresses.length = 0
+    amounts.length = 0
 })
 
-const approveButton = document.getElementById("approve_button");
-const InputField = document.getElementById("salary")
-approveButton.addEventListener("click", async function (e) {
-    const userAccount = await Web3Lib.getAccount();
-    manipulateString()
-    await allowance(userAccount);
-    await approve(userAccount);
-    addresses.length = 0;
-    amounts.length = 0;
-})
+const AddressField = document.getElementById("salary_address")
+const ValueField = document.getElementById("salary_value")
+
 
 async function pay(userAccount){
-    await contract.methods.payUsdt(usdtContractAddress,addresses,getAmounts()).send(
+    await contract.methods.pay(addresses,getAmounts(),getTotal()).send(
         { from: userAccount }, async function (err, result) {
             if (err) {
                 console.log(err);
@@ -52,15 +53,8 @@ async function pay(userAccount){
 }
 
 async function allowance(userAccount){
-    await usdtContract.methods.allowance(userAccount,contractAddress).call(
-        { from: userAccount }, async function (err, result) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                console.log("allowance is :" + Web3Lib.weiToEther(result))
-            }
-        }
+    return await usdtContract.methods.allowance(userAccount,contractAddress).call(
+        { from: userAccount }
     );
 }
 
@@ -77,8 +71,8 @@ async function getUsdtBalance(userAccount){
     );
 }
 
-async function approve(userAccount){
-    await usdtContract.methods.approve(contractAddress,getTotal()).send(
+async function approve(userAccount,amount){
+    await usdtContract.methods.approve(contractAddress,Web3Lib.etherToWei(amount)).send(
         { from: userAccount }, async function (err, result) {
             if (err) {
                 console.log(err);
@@ -91,12 +85,15 @@ async function approve(userAccount){
 }
 
 function manipulateString(){
-    const text = InputField.value;
-    const lines = text.trim().split('\n');
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim().split(",")
-        addresses.push(line[0].trim())
-        amounts.push(parseInt(line[1].trim()))
+    const inputAddresses = AddressField.value.trim().split('\n')
+    const inputValues = ValueField.value.trim().split('\n')
+    if(inputAddresses.length != inputValues.length){
+        alert("addresses length and values length must match")
+        return;    
+    }
+    for (let i = 0; i < inputAddresses.length; i++){
+        addresses.push(inputAddresses[i].trim())
+        amounts.push(parseInt(inputValues[i].trim()))
     }
     console.log(addresses)
     console.log(amounts)
