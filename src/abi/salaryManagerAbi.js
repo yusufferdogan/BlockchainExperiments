@@ -58,16 +58,6 @@ export function myAbi() {
         {
             "inputs": [
                 {
-                    "internalType": "address",
-                    "name": "token",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "from",
-                    "type": "address"
-                },
-                {
                     "internalType": "address[]",
                     "name": "payees",
                     "type": "address[]"
@@ -76,37 +66,9 @@ export function myAbi() {
                     "internalType": "uint256[]",
                     "name": "amounts",
                     "type": "uint256[]"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "total",
-                    "type": "uint256"
                 }
             ],
             "name": "pay",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "token",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address[]",
-                    "name": "payees",
-                    "type": "address[]"
-                },
-                {
-                    "internalType": "uint256[]",
-                    "name": "amounts",
-                    "type": "uint256[]"
-                }
-            ],
-            "name": "payUsdt",
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
