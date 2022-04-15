@@ -13,7 +13,7 @@ const addresses = []
 const amounts = []
 //*****************************************************************************
 const jsonInterface = JSON.parse(JSON.stringify(SalaryManagerAbi.myAbi()));
-const contractAddress = "0xa93C73c5F9b4f53352dd1d61B377a0d6d1820d20";
+const contractAddress = "0x5e8a6ae6bd1c742181432ad887f0b60d180549cc";
 const contract = new web3.eth.Contract(jsonInterface, contractAddress);
 //*****************************************************************************
 const usdtJsonInterface = JSON.parse(JSON.stringify(UsdtAbi.myAbi()));
@@ -25,9 +25,9 @@ const button = document.getElementById("submit_button");
 button.addEventListener("click", async function (e) {
     const userAccount = await Web3Lib.getAccount();
     manipulateString()
-    const UserAllowance = Web3Lib.weiToEther(await allowance(userAccount));
+    const userAllowance = Web3Lib.weiToEther(await allowance(userAccount));
     console.log("UserAllowance: ", UserAllowance)
-    if(UserAllowance < getTotal()){
+    if(userAllowance < getTotal()){
         await approve(userAccount,500);
     }
     await pay(userAccount);
