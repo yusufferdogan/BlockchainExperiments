@@ -22,7 +22,7 @@ button.addEventListener("click", async function (e) {
   const userAllowance = await allowance(token, userAccount, contractAddress);
   console.log("userAllowance: ",tronWeb.fromSun(userAllowance));
   if (userAllowance < getTotal()) {
-    await approve(token, getTotal());
+    await approve(token, getTotal()); //TODO:GET APPROVE AMOUNT FROM CEO
   }
   await pay(contract);
   addresses.length = 0;
