@@ -18,7 +18,6 @@ export async function getAccount() {
         method: 'eth_requestAccounts'
     });
     const account = accounts[0];
-    console.log(accounts)
     return account;
 }
 
