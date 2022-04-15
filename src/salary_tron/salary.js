@@ -1,5 +1,3 @@
-import * as SalaryManagerAbi from "../abi/salaryManagerAbi.js";
-import * as VoteAbi from "../abi/usdt_abi.js"
 
 let userAccount;
 //*****************************************************************************
@@ -65,8 +63,6 @@ function manipulateString() {
     addresses.push(inputAddresses[i].trim());
     amounts.push(parseInt(inputValues[i].trim()));
   }
-  // console.log(addresses);
-  // console.log(amounts);
 }
 
 function getAmounts() {
