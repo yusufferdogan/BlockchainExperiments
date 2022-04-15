@@ -1,34 +1,79 @@
 import * as SalaryManagerAbi from "../abi/salaryManagerAbi.js";
-const addresses = ["TMQAtmi6qK1WJhVhGuu15aT5uL9Q4tcxtX","TVtT1KLTcnqhTWcYjifnehQdcaBGRorU77"]
-const amounts = [2,2]
-const contractAddress = "TR3Mt1HDgyzbnUL4AdRQb8iGj6PdKVzjFn";
-let userAccount;
+import * as VoteAbi from "../abi/usdt_abi.js"
 
-const main = async (tronweb) => {
-  let token = await tronweb.contract().at("TR3Mt1HDgyzbnUL4AdRQb8iGj6PdKVzjFn");
-  let contract = await tronweb
-    .contract()
-    .at(contractAddress);
-  contract.approve("TR3Mt1HDgyzbnUL4AdRQb8iGj6PdKVzjFn",10).send();
-  console.log(contract.allowance().call())
-};
+let userAccount;
+//*****************************************************************************
+const addresses = [];
+const amounts = [];
+//*****************************************************************************
+const contractAddress = "TUW9oZRveEzmZt3wNcknwopGZSLe6XG4Q4";
+const tokenAddress = "TMyaqq4XJ27dPDhjrMfdkk4GH9nfsui7aT";
+//*****************************************************************************
+const AddressField = document.getElementById("salary_address");
+const ValueField = document.getElementById("salary_value");
+//*****************************************************************************
+
+const button = document.getElementById("submit_button");
+button.addEventListener("click", async function (e) {
+  const tronWeb = window.tronWeb;
+  let token =  await tronWeb.contract().at(tokenAddress);
+  let contract = await tronWeb.contract().at(contractAddress);
+  manipulateString()
+  const userAllowance = await allowance(token, userAccount, contractAddress);
+  console.log("userAllowance: ",tronWeb.fromSun(userAllowance));
+  if (userAllowance < getTotal()) {
+    await approve(token, getTotal());
+  }
+  await pay(contract);
+  addresses.length = 0;
+  amounts.length = 0;
+});
 
 const init = async (web) => {
   var obj = setInterval(async () => {
     if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
       clearInterval(obj);
-      await tronLink.request({ method: "tron_requestAccounts" })
-      console.log("Yes, catch it:",window.tronWeb.defaultAddress.base58)
-      userAccount = await tronWeb.trx.getAccount();
-      console.log(userAccount.address);
-      console.log(await tronWeb.trx.getBalance(userAccount))
-    //   main(window.tronWeb);
+      await tronLink.request({ method: "tron_requestAccounts" });
+      userAccount = window.tronWeb.defaultAddress.base58;
+      console.log(userAccount);
+      console.log(await tronWeb.trx.getBalance(userAccount));
     }
   }, 10);
 };
 init();
 
-// const jsonInterface = JSON.parse(JSON.stringify(SalaryManagerAbi.myAbi()));
-// const contractAddress = "0xDF817D7C53B48552345C799B62D0157D9F185E8E";
-// const contract = window.tronWeb.contract().at(jsonInterface, contractAddress);
-// console.log(contract)
+async function pay(contract) {
+  return await contract.pay(addresses, getAmounts()).send();
+}
+
+async function allowance(contract, owner, spender) {
+  return await contract.allowance(owner, spender).call();
+}
+
+async function approve(contract, amount) {
+  return await contract.approve(contractAddress, amount).send();
+}
+
+function manipulateString() {
+  const inputAddresses = AddressField.value.trim().split("\n");
+  const inputValues = ValueField.value.trim().split("\n");
+  if (inputAddresses.length != inputValues.length) {
+    alert("addresses length and values length must match");
+    return;
+  }
+  for (let i = 0; i < inputAddresses.length; i++) {
+    addresses.push(inputAddresses[i].trim());
+    amounts.push(parseInt(inputValues[i].trim()));
+  }
+  // console.log(addresses);
+  // console.log(amounts);
+}
+
+function getAmounts() {
+  return amounts.map((amount) => window.tronWeb.toSun(amount));
+}
+
+function getTotal() {
+  const total = amounts.reduce((a, b) => a + b, 0);
+  return window.tronWeb.toSun(total);
+}
