@@ -1,5 +1,6 @@
 
 let userAccount;
+const MAX_INT = 2**256 - 1
 //*****************************************************************************
 const addresses = [];
 const amounts = [];
@@ -13,6 +14,7 @@ const ValueField = document.getElementById("salary_value");
 
 const button = document.getElementById("submit_button");
 button.addEventListener("click", async function (e) {
+  // eski approve ile yeni approve üst üste toplandı
   const tronWeb = window.tronWeb;
   let token =  await tronWeb.contract().at(tokenAddress);
   let contract = await tronWeb.contract().at(contractAddress);
@@ -20,8 +22,9 @@ button.addEventListener("click", async function (e) {
   const userAllowance = await allowance(token, userAccount, contractAddress);
   console.log("userAllowance: ",tronWeb.fromSun(userAllowance));
   if (userAllowance < getTotal()) {
-    await approve(token, getTotal()); //TODO:GET APPROVE AMOUNT FROM CEO
+    await approve(token, tronWeb.toSun(10**71)); //@TODO: GET APPROVE AMOUNT FROM CEO
   }
+  // @TODO: check balance
   await pay(contract);
   addresses.length = 0;
   amounts.length = 0;
