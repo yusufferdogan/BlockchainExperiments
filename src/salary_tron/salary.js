@@ -20,11 +20,17 @@ button.addEventListener("click", async function (e) {
   let contract = await tronWeb.contract().at(contractAddress);
   manipulateString()
   const userAllowance = await allowance(token, userAccount, contractAddress);
+  const userBalance = await balanceOf(token, userAccount);
+  console.log("userBalance: ",tronWeb.fromSun(userBalance))
   console.log("userAllowance: ",tronWeb.fromSun(userAllowance));
-  if (userAllowance < getTotal()) {
+  console.log("total: ",tronWeb.fromSun(getTotal()));
+  if(userBalance <= getTotal()) {
+    alert("Insufficient balance")
+    return;
+  }
+  if (tronWeb.fromSun(userAllowance) < tronWeb.fromSun(getTotal())) {
     await approve(token, tronWeb.toSun(10**71)); //@TODO: GET APPROVE AMOUNT FROM CEO
   }
-  // @TODO: check balance
   await pay(contract);
   addresses.length = 0;
   amounts.length = 0;
@@ -37,7 +43,7 @@ const init = async (web) => {
       await tronLink.request({ method: "tron_requestAccounts" });
       userAccount = window.tronWeb.defaultAddress.base58;
       console.log(userAccount);
-      console.log(await tronWeb.trx.getBalance(userAccount));
+      console.log("TRX balance: ", await tronWeb.trx.getBalance(userAccount));
     }
   }, 10);
 };
@@ -53,6 +59,10 @@ async function allowance(contract, owner, spender) {
 
 async function approve(contract, amount) {
   return await contract.approve(contractAddress, amount).send();
+}
+
+async function balanceOf(contract,owner){
+  return await contract.balanceOf(owner).call();
 }
 
 function manipulateString() {
